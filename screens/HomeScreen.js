@@ -25,7 +25,7 @@ const HomeScreen = () => {
         <View className="h-16 w-16 bg-black rounded-full items-center justify-center">
           <Text className=" text-[#00bcc9] text-3xl font-semibold">Go</Text>
         </View>
-        <Text className="text-[#2a2b4b] text-3xl font-semibold">Travel</Text>
+        <Text className="text-[#2a2b4b] text-5xl font-semibold">Travel</Text>
       </View>
 
       {/* second section */}
@@ -51,7 +51,9 @@ const HomeScreen = () => {
           className="h-full w-full object-cover mt-20"
         />
 
-        <TouchableOpacity className="absolute bottom-20 w-24 h-24 border-l-2 border-r-2 border-t-4 rounded-full border-[#00bcc9] items-center justify-center">
+        <TouchableOpacity
+        onPress={() => navigation.navigate("Discover")}
+        className="absolute bottom-20 w-24 h-24 border-l-2 border-r-2 border-t-4 rounded-full border-[#00bcc9] items-center justify-center">
           <Animatable.View
             animation={"pulse"}
             easing="ease-in-out"
