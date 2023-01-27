@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native";
@@ -14,6 +14,7 @@ import { Avatar, Hotels, Restaurants, Attractions, NotFound } from "../assets";
 import MenuItem from "../components/MenuItem";
 import { FontAwesome } from "@expo/vector-icons";
 import CartItem from "../components/CartItem";
+import { getPlacesData } from "../api";
 
 const Discover = () => {
   const [type, setType] = useState("restaurants");
@@ -26,6 +27,17 @@ const Discover = () => {
       headerShown: false,
     });
   }, []);
+
+  useEffect(() => {
+    isLoading(true);
+    getPlacesData().then((data) => {
+        setMainData(data);
+        setInterval(() => {
+            isLoading(false);
+        }, 1000);
+      });
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-white relative">
       <View className="flex-row items-center justify-between px-8 mt-4">
@@ -100,33 +112,29 @@ const Discover = () => {
                 />
               </TouchableOpacity>
             </View>
-            <View className="flex-row  justify-evenly px-4 mt-5">
-              {mainData ? (
+            <View className="flex-row flex-wrap justify-evenly px-4 mt-5">
+              {mainData?.length > 0 ? (
+                <>
+                  {mainData?.map((data, i) => (
+                    <CartItem
+                      key={i}
+                      imageSrc={
+                        data?.photo?.images?.medium?.url
+                          ? data?.photo?.images?.medium?.url
+                          : "https://cdn.pixabay.com/photo/2015/10/30/12/22/eat-1014025_1280.jpg"
+                      }
+                      title={data?.name}
+                      location={data?.location_string}
+                      data={data}
+                    />
+                    ))}
+                </>
+              ) : (
                 <>
                   <View className="w-full h-[300px] justify-center items-center space-y-1">
                     <Image source={NotFound} className="w-24 h-24 " />
                     <Text className="text-xl">Opssss.... No Data Found </Text>
                   </View>
-                </>
-              ) : (
-                <>
-                  {" "}
-                  <CartItem
-                    key={101}
-                    imageSrc={
-                      "https://cdn.pixabay.com/photo/2022/10/24/11/55/autumn-7543217_960_720.jpg"
-                    }
-                    title="something"
-                    location="Sydney"
-                  />
-                  <CartItem
-                    key={102}
-                    imageSrc={
-                      "https://cdn.pixabay.com/photo/2022/07/11/08/44/tower-7314495_960_720.jpg"
-                    }
-                    title="sample"
-                    location="KL"
-                  />
                 </>
               )}
             </View>
