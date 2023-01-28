@@ -22,10 +22,10 @@ const HomeScreen = () => {
     <SafeAreaView className="flex-1 bg-white relative">
       {/* first section */}
       <View className="flex-row px-6 pt-8 items-center space-x-2">
-        <View className="h-16 w-16 bg-black rounded-full items-center justify-center">
-          <Text className=" text-[#00bcc9] text-3xl font-semibold">Go</Text>
+        <View className="h-20 w-20 bg-[#ececec] rounded-full items-center justify-center ">
+          <Text className=" text-[#ff735c] text-2xl font-bold ">Let's</Text>
         </View>
-        <Text className="text-[#2a2b4b] text-5xl font-semibold">Travel</Text>
+        <Text className="text-[#00bcc9] text-5xl font-semibold">Travel</Text>
       </View>
 
       {/* second section */}

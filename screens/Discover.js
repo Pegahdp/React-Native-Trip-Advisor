@@ -20,6 +20,11 @@ const Discover = () => {
   const [type, setType] = useState("restaurants");
   const [loading, isLoading] = useState(false);
   const [mainData, setMainData] = useState([]);
+  const [bl_lat, setBl_lat] = useState(null);
+  const [bl_lng, setBl_lng] = useState(null);
+  const [tr_lat, setTr_lat] = useState(null);
+  const [tr_lng, setTr_lng] = useState(null);
+
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -30,13 +35,13 @@ const Discover = () => {
 
   useEffect(() => {
     isLoading(true);
-    getPlacesData().then((data) => {
+    getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, type).then((data) => {
         setMainData(data);
         setInterval(() => {
             isLoading(false);
-        }, 1000);
+        }, 200);
       });
-  }, []);
+  }, [bl_lat, bl_lng, tr_lat, tr_lng, type]);
 
   return (
     <SafeAreaView className="flex-1 bg-white relative">
@@ -47,10 +52,10 @@ const Discover = () => {
             The beauty today
           </Text>
         </View>
-        <View className="w-14 h-14 bg-gray-200  justify-center items-center">
+        <View className="w-14 h-14  justify-center items-center">
           <Image
             source={Avatar}
-            className="h-full w-full object-cover rounded-md shadow-lg"
+            className="h-full w-full object-cover rounded-full shadow-lg"
           />
         </View>
       </View>
@@ -62,6 +67,10 @@ const Discover = () => {
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             console.log(details?.geometry?.viewport);
+            setBl_lat(details?.geometry?.viewport?.southwest?.lat);
+            setBl_lng(details?.geometry?.viewport?.southwest?.lng);
+            setTr_lat(details?.geometry?.viewport?.northeast?.lat);
+            setTr_lng(details?.geometry?.viewport?.northeast?.lng);
           }}
           query={{
             key: "AIzaSyA8BjlzBN-jhx-6ycBpyVVYH3ep8_LCkPk",
@@ -80,22 +89,22 @@ const Discover = () => {
           <View className="flex-row items-center justify-between px-8 mt-4">
             <MenuItem
               key={"hotels"}
-              title="hotels"
-              imageSrc={Hotels}
+              title="Hotels"
+              iconName={"hotel"}
               type={type}
               setType={setType}
             />
             <MenuItem
-              key={"attraction"}
-              title="attractions"
-              imageSrc={Attractions}
+              key={"attractions"}
+              title="Attractions"
+              iconName={"attractions"}
               type={type}
               setType={setType}
             />
             <MenuItem
-              key={"restaurant"}
-              title="restaurants"
-              imageSrc={Restaurants}
+              key={"restaurants"}
+              title="Restaurants"
+              iconName={"restaurant-menu"}
               type={type}
               setType={setType}
             />
